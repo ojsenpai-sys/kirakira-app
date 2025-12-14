@@ -1,21 +1,19 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// ★ ここを sqlite に変更しました
+// ★ Neon を使う場合はこの書き方！
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// ユーザー台帳の定義
 model User {
   id             String   @id @default(cuid())
-  userId         String   @unique // ClerkのユーザーID
-  count          Int      @default(0) // 生成した回数
-  isPremium      Boolean  @default(false) // 将来用：課金ユーザーフラグ
+  userId         String   @unique
+  count          Int      @default(0)
+  isPremium      Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
